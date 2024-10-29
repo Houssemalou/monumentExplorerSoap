@@ -1,9 +1,6 @@
 package com.enicarthage.monumentExplorer.monument;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Setter
@@ -19,6 +16,7 @@ public class Monument {
     private Long id;
     private String name;
     private String country;
-    private String imageUrl;  // URL to the monument's image
+    private String imageUrl;
+    @Column(length = 25000) // URL to the monument's image
     private String historicalDetails;
 }
