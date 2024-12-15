@@ -17,6 +17,6 @@ public class Monument {
     private String name;
     private String country;
     private String imageUrl;
-    @Column(length = 25000) // URL to the monument's image
+    @Column(length = 25000)
     private String historicalDetails;
 }

@@ -31,7 +31,6 @@ public class TranslationService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("q", text);
         requestBody.put("source", sourceLang);

@@ -2,40 +2,41 @@ package com.enicarthage.monumentExplorer.imageRecognition;
 
 import com.enicarthage.monumentExplorer.monument.Monument;
 import com.enicarthage.monumentExplorer.monument.MonumentRepository;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+
+
 
 @RestController
 @RequestMapping("/api/monuments")
 @RequiredArgsConstructor
 public class MonumentRecognitionController {
     private final ImageRecognitionService imageRecognitionService;
-    private final MonumentRepository monumentRepository;
 
-    @PostMapping("/recognize")
-    public ResponseEntity<Monument> recognizeMonument(@RequestParam("image") MultipartFile file) {
-        try {
-            String monumentName = imageRecognitionService.recognizeMonument(file.getBytes());
 
-            if (monumentName != null) {
-                Monument monument = monumentRepository.findByNameContaining(monumentName).stream().findFirst().orElse(null);
-                if (monument != null) {
-                    return ResponseEntity.ok(monument);  // Return the recognized monument's details
-                }
-            }
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);  // Monument not found in the database
-
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    @GetMapping("/{imageUrl}")
+    public ResponseEntity<Monument> getMonument(@PathVariable("imageUrl") String imageUrl) {
+        Monument closestMonument = imageRecognitionService.findClosestMonument();
+        if (closestMonument != null) {
+            return ResponseEntity.ok(closestMonument);
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
+
+
+
 }

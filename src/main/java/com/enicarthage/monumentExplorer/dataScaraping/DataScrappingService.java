@@ -45,7 +45,6 @@ public class DataScrappingService {
 
                 }
             }
-
             monumentRepository.saveAll(monuments);
             System.out.println(count + " monuments scraped successfully.");
         } catch (IOException e) {

@@ -6,10 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -24,22 +21,19 @@ public class TextToSpeechController {
 
     private final MonumentRepository monumentRepository;
 
-    @GetMapping("/{id}/audio")
-    public ResponseEntity<byte[]> getMonumentAudioDescription(@PathVariable Integer id) {
+    @GetMapping("/{id}/convert")
+    public String convertTextToAudio(@PathVariable Integer id) {
         Monument monument = monumentRepository.findById(id).orElse(null);
-
         if (monument == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return "monument not found";
         }
-
         try {
-            byte[] audio = textToSpeechService.generateSpeech(monument.getHistoricalDetails());
-            return ResponseEntity.ok()
-                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                    .body(audio);
+            return textToSpeechService.convertTextToAudio(monument.getHistoricalDetails());
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            e.printStackTrace();
+            return "Erreur lors de la création du fichier audio.";
         }
     }
+
 }
 

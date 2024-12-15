@@ -16,6 +16,18 @@ spring:
 libretranslate:
   url: http://localhost:5000
 
+azure:
+  openai:
+    endpoint: "https://monumentrecog.cognitiveservices.azure.com/"
+    tts:
+      url: "https://aloui-m3xfuwjj-swedencentral.openai.azure.com/openai/deployments/tts/audio/speech?api-version=2024-05-01-preview"
+    api:
+      key: "77njCqJHV669adxQTDyX8EykpcdjEshmZOgTQxekSDoJHiHj0mliJQQJ99AKACfhMk5XJ3w3AAAAACOGCp8d"
+      key1: "6bzztWKNlZOQdEX3fsIQJsYPIr6Z2JEX57t0ib7ldKM9MAIPapGYJQQJ99ALACYeBjFXJ3w3AAAFACOGcy1E"
+
+
+
+
 server:
   port: 8081
 
